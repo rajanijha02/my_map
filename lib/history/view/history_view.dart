@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_map/history/controller/history_controller.dart';
+import 'package:my_map/model/history_model.dart';
 
 class HistoryView extends GetView<HistoryController> {
   const HistoryView({super.key});
@@ -47,17 +48,27 @@ class HistoryView extends GetView<HistoryController> {
                   )
                 : ListView.builder(
                     itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 2,
-                        child: ListTile(
-                          title: Text(
-                            controller.history[index].date ?? 'NOT_FOUND',
-                            style: GoogleFonts.poppins(
-                              color: Colors.black,
+                      return InkWell(
+                        onTap: () {
+                          LocationHistory locationHistory =
+                              controller.history[index];
+                          Get.toNamed(
+                            '/maphistory',
+                            arguments: locationHistory,
+                          );
+                        },
+                        child: Card(
+                          elevation: 2,
+                          child: ListTile(
+                            title: Text(
+                              controller.history[index].date ?? 'NOT_FOUND',
+                              style: GoogleFonts.poppins(
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                          subtitle: Text(
-                            'Total Location Count: ${controller.history[index].location}',
+                            subtitle: Text(
+                              'Total Location Count: ${controller.history[index].location}',
+                            ),
                           ),
                         ),
                       );
@@ -68,3 +79,8 @@ class HistoryView extends GetView<HistoryController> {
     );
   }
 }
+/**
+ * for(var index = 0; index<10; index++){
+ *  console.log(index);
+ * }
+ */

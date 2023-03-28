@@ -8,15 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:my_map/storage_controller.dart';
 
-/**
- * {
- *  "MarkerId": Marker()
- * }
- * 
- * Map<String, int> map = {"key":1},
- * Map<int, String> = {1: "Key"}
- * 
- */
 class HomeController extends GetConnect implements GetxService {
   RxList<LatLng> points = <LatLng>[].obs;
   RxBool start = false.obs;
@@ -86,6 +77,7 @@ class HomeController extends GetConnect implements GetxService {
 
     // This code will return current location on  200 ms
     Geolocator.getPositionStream().listen((event) async {
+     
       point.add(LatLng(event.latitude, event.longitude));
 
       // Assigned New CameraPosition Value in cameraPosition Variable
@@ -105,7 +97,7 @@ class HomeController extends GetConnect implements GetxService {
         Polyline(polylineId: PolylineId('My-polyline'), points: point.value),
       );
       polyline.refresh();
-
+      
       if (start.isTrue) {
         await sendLocation(lat: event.latitude, lng: event.longitude);
       }

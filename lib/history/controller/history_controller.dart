@@ -26,6 +26,7 @@ class HistoryController extends GetxController {
         'Authorization': storage.getToken(),
       });
       history.clear();
+      // history = [];
       var body = json.decode(response.body);
       if (response.statusCode == 200) {
         Fluttertoast.showToast(msg: 'Data loaded');
@@ -33,6 +34,7 @@ class HistoryController extends GetxController {
           LocationHistory locationHistory = LocationHistory.fromJson(data);
           history.add(locationHistory);
         }
+        print(history.length);
         history.refresh();
         isLoading.value = false;
       } else {

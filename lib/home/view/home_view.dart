@@ -158,8 +158,3 @@ class HomeView extends GetView<HomeController> {
   }
 }
 
-/**
- * 
- * -> For create polylines
- * 
- */

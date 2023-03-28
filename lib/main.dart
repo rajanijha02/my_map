@@ -4,6 +4,7 @@ import 'package:my_map/bindings.dart';
 import 'package:my_map/history/view/history_view.dart';
 import 'package:my_map/home/view/home_view.dart';
 import 'package:my_map/login/view/login_view.dart';
+import 'package:my_map/maphistory/view/maphistory_view.dart';
 import 'package:my_map/register/view/register_view.dart';
 import 'package:my_map/splash/views/splash_views.dart';
 
@@ -45,6 +46,11 @@ class MyMaps extends StatelessWidget {
           name: '/history',
           page: () => HistoryView(),
           binding: HistoryBindings(),
+        ),
+        GetPage(
+          name: '/maphistory',
+          page: () => MapHistoryView(),
+          binding: MapHistoryBindings(),
         ),
       ],
       initialRoute: '/splash',
