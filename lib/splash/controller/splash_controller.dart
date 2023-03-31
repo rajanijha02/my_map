@@ -42,3 +42,9 @@ class SplashController extends GetxController {
     }
   }
 }
+/**
+ * 
+ * -> Firebase 
+ * 
+ * 
+ */

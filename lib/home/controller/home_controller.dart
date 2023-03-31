@@ -1,3 +1,6 @@
+// ignore_for_file: null_argument_to_non_null_type
+
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -13,10 +16,11 @@ class HomeController extends GetConnect implements GetxService {
   RxBool start = false.obs;
   RxInt sendCount = 0.obs;
   late StorageController storage;
+  RxBool isLoggingOut = false.obs;
+  Completer<GoogleMapController> gogleMapController = Completer();
 
   @override
   void onInit() {
-    // TODO: implement onInit
     super.onInit();
     storage = Get.find<StorageController>();
   }
@@ -48,6 +52,9 @@ class HomeController extends GetConnect implements GetxService {
   }
 
   mapController({required GoogleMapController mapController}) async {
+    if (!gogleMapController.isCompleted) {
+      gogleMapController.complete(mapController);
+    }
     LocationPermission location = await Geolocator.checkPermission();
 
     if (location == LocationPermission.denied) {
@@ -77,7 +84,6 @@ class HomeController extends GetConnect implements GetxService {
 
     // This code will return current location on  200 ms
     Geolocator.getPositionStream().listen((event) async {
-     
       point.add(LatLng(event.latitude, event.longitude));
 
       // Assigned New CameraPosition Value in cameraPosition Variable
@@ -97,7 +103,7 @@ class HomeController extends GetConnect implements GetxService {
         Polyline(polylineId: PolylineId('My-polyline'), points: point.value),
       );
       polyline.refresh();
-      
+
       if (start.isTrue) {
         await sendLocation(lat: event.latitude, lng: event.longitude);
       }
@@ -123,5 +129,24 @@ class HomeController extends GetConnect implements GetxService {
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
+  }
+
+  Future<bool> logout() async {
+    try {
+      isLoggingOut.value = true;
+      await storage.removeToken();
+      isLoggingOut.value = false;
+      return true;
+    } catch (e) {
+      isLoggingOut.value = false;
+      return false;
+    }
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+    super.dispose();
+    gogleMapController.complete();
   }
 }

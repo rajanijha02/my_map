@@ -12,6 +12,34 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 7, 21, 73),
+        title: Text(
+          'My Map',
+          style: GoogleFonts.poppins(
+            color: Colors.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        actions: [
+          Obx(() {
+            return controller.isLoggingOut.isTrue
+                ? Container(
+                    height: 60,
+                    width: 60,
+                    alignment: Alignment.center,
+                    child: const CircularProgressIndicator(),
+                  )
+                : IconButton(
+                    onPressed: () async {
+                      bool flag = await controller.logout();
+                      if (flag) Get.offAllNamed('/login');
+                    },
+                    icon: Icon(Icons.logout),
+                  );
+          })
+        ],
+      ),
       bottomSheet: Container(
         height: 60,
         child: Padding(
@@ -157,4 +185,3 @@ class HomeView extends GetView<HomeController> {
     );
   }
 }
-
